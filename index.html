@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>嘉義縣消防局 第一大隊水上分隊 業務面板 (雲端版)</title>
+  <title>嘉義縣消防局 第二大隊水上分隊 業務面板 (雲端版)</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚒</text></svg>">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -73,7 +73,7 @@
             <div>
               <div class="flex items-center gap-2">
                 <span class="text-xs tracking-wider uppercase px-2 py-0.5 rounded bg-red-600 font-bold text-white shadow-sm">嘉義縣消防局</span>
-                <span class="text-xs text-slate-300">第一大隊</span>
+                <span class="text-xs text-amber-300 font-bold">第二大隊</span>
               </div>
               <h1 class="text-xl md:text-2xl font-black tracking-tight text-white flex items-center gap-2">
                 水上分隊業務面板
@@ -85,7 +85,10 @@
           </div>
           
           <!-- Mobile action button -->
-          <div class="md:hidden flex items-center gap-2">
+          <div class="md:hidden flex items-center gap-1.5">
+            <a href="https://drive.google.com/drive/folders/1wRHAU_RGbo_IlvTzUOl5pzH90IC8VaKO?usp=drive_link" target="_blank" rel="noopener noreferrer" title="開啟分隊 Google 雲端上傳硬碟" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-lg text-sm font-semibold shadow">
+              <i class="fa-brands fa-google-drive"></i>
+            </a>
             <button onclick="openDataModal()" title="資料管理與匯出" class="bg-slate-800 border border-slate-700 text-slate-200 p-2 rounded-lg text-sm font-semibold shadow">
               <i class="fa-solid fa-sliders"></i>
             </button>
@@ -96,29 +99,41 @@
         </div>
 
         <!-- Clock & Controls -->
-        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+        <div class="flex items-center gap-2.5 w-full md:w-auto justify-between md:justify-end flex-wrap sm:flex-nowrap">
           <div class="hidden lg:flex flex-col text-right">
             <div id="liveClockDate" class="text-xs text-slate-300 font-medium">載入時間中...</div>
             <div id="liveClockTime" class="text-lg font-bold font-mono text-amber-400 tracking-wider">00:00:00</div>
           </div>
 
+          <!-- Google Drive Shared Upload Folder Button -->
+          <a href="https://drive.google.com/drive/folders/1wRHAU_RGbo_IlvTzUOl5pzH90IC8VaKO?usp=drive_link" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             title="開啟水上分隊共用 Google 雲端硬碟（提供同仁上傳檔案）" 
+             class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2 rounded-lg font-bold flex items-center gap-1.5 shadow transition transform active:scale-95">
+            <i class="fa-brands fa-google-drive text-base text-white"></i>
+            <span class="hidden sm:inline">同仁雲端上傳區</span>
+            <span class="sm:hidden">上傳硬碟</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-75"></i>
+          </a>
+
           <!-- Deploy Guide Button -->
           <button onclick="openDeployGuideModal()" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg font-semibold flex items-center gap-1.5 transition">
             <i class="fa-brands fa-github text-white"></i>
-            <span class="hidden sm:inline">部署到 GitHub Pages</span>
-            <span class="sm:hidden">部署教學</span>
+            <span class="hidden sm:inline">GitHub Pages 部署</span>
+            <span class="sm:hidden">部署</span>
           </button>
 
           <!-- Data Management Button -->
           <button onclick="openDataModal()" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg font-semibold flex items-center gap-1.5 transition">
             <i class="fa-solid fa-cloud-arrow-down text-cyan-400"></i>
-            <span>資料管理 / 匯出</span>
+            <span>資料管理</span>
           </button>
 
           <!-- Add Item Button (Desktop) -->
-          <button onclick="openModal()" class="hidden md:flex items-center gap-2 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white font-bold px-4 py-2 rounded-lg shadow-md hover:shadow-red-600/30 transition transform active:scale-95 text-xs lg:text-sm">
+          <button onclick="openModal()" class="hidden md:flex items-center gap-1.5 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white font-bold px-3.5 py-2 rounded-lg shadow-md hover:shadow-red-600/30 transition transform active:scale-95 text-xs lg:text-sm">
             <i class="fa-solid fa-circle-plus text-base"></i>
-            <span>承辦人新增業務 / 表單</span>
+            <span>承辦人新增業務</span>
           </button>
         </div>
 
@@ -333,7 +348,7 @@
   <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-2">
-        <span class="font-bold text-slate-700">嘉義縣消防局 第一大隊水上分隊</span>
+        <span class="font-bold text-slate-700">嘉義縣消防局 第二大隊水上分隊</span>
         <span>• 雲端業務管理平台 (純靜態免主機維護架構)</span>
       </div>
       <div class="flex items-center gap-4">
@@ -417,19 +432,54 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
-              業務承辦人 (隊員姓名 / 職稱)
+              業務承辦人 (下拉選取) <span class="text-red-500">*</span>
             </label>
             <div class="relative">
-              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                 <i class="fa-solid fa-user-shield text-xs"></i>
               </span>
-              <input 
-                type="text" 
+              <select 
                 id="formHandler" 
-                placeholder="例如：隊員 許承翰" 
-                class="w-full pl-8 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white"
+                onchange="handleHandlerChange()"
+                class="w-full pl-8 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white font-medium"
               >
+                <option value="">-- 請選擇分隊承辦人 --</option>
+                <optgroup label="【分隊幹部】">
+                  <option value="分隊長 呂詠祺">分隊長 呂詠祺</option>
+                  <option value="小隊長 王建仁">小隊長 王建仁</option>
+                  <option value="小隊長 陳永興">小隊長 陳永興</option>
+                </optgroup>
+                <optgroup label="【分隊隊員】">
+                  <option value="隊員 張倉周">隊員 張倉周</option>
+                  <option value="隊員 楊安凱">隊員 楊安凱</option>
+                  <option value="隊員 張嘉明">隊員 張嘉明</option>
+                  <option value="隊員 林俊璋">隊員 林俊璋</option>
+                  <option value="隊員 洪郁智">隊員 洪郁智</option>
+                  <option value="隊員 侯元豐">隊員 侯元豐</option>
+                  <option value="隊員 莊詠翔">隊員 莊詠翔</option>
+                  <option value="隊員 鄭舒萍">隊員 鄭舒萍</option>
+                  <option value="隊員 李哲宇">隊員 李哲宇</option>
+                  <option value="隊員 王倚鍠">隊員 王倚鍠</option>
+                  <option value="隊員 沈峻億">隊員 沈峻億</option>
+                  <option value="隊員 葉南廷">隊員 葉南廷</option>
+                  <option value="隊員 徐睿聰">隊員 徐睿聰</option>
+                  <option value="隊員 張峰誌">隊員 張峰誌</option>
+                  <option value="隊員 洪偉鈞">隊員 洪偉鈞</option>
+                  <option value="隊員 江岳峰">隊員 江岳峰</option>
+                  <option value="隊員 王意婷">隊員 王意婷</option>
+                </optgroup>
+                <optgroup label="【其他選項】">
+                  <option value="全體同仁">全體同仁</option>
+                  <option value="custom">其他（自行輸入姓名...）</option>
+                </optgroup>
+              </select>
             </div>
+            <input 
+              type="text" 
+              id="customHandlerInput" 
+              placeholder="請輸入自訂職稱與姓名 (如：替代役 王大明)" 
+              class="hidden mt-2 w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white"
+            >
           </div>
 
           <div class="flex items-center pt-5">
@@ -670,15 +720,28 @@
 
   <!-- ==================== FRONTEND JAVASCRIPT ==================== -->
   <script>
-    // Embedded Default Data Fallback (16 Authentic Items)
+    // Embedded Default Data Fallback (17 Authentic Items)
     const DEFAULT_SEED_DATA = [
+      {
+        id: 0,
+        title: "【雲端硬碟】水上分隊業務檔案上傳與共用空間",
+        category: "行政組",
+        item_type: "doc",
+        description: "提供分隊全體同仁與各組承辦人上傳公務檔案、各類空白表格、宣導成果照片及共用資料之專屬 Google 雲端硬碟資料夾。",
+        handler: "分隊長 呂詠祺",
+        file_url: "https://drive.google.com/drive/folders/1wRHAU_RGbo_IlvTzUOl5pzH90IC8VaKO?usp=drive_link",
+        file_format: "LINK",
+        google_form_url: "",
+        is_pinned: 1,
+        updated_at: "2026-10-13"
+      },
       {
         id: 1,
         title: "【重要通知】本月水上分隊常年訓練梯次與救技競賽日程表",
         category: "公告區",
         item_type: "notice",
         description: "請各位同仁留意各自梯次及個人防護裝備整備，當日準時於車庫前集合完畢。",
-        handler: "分隊長",
+        handler: "分隊長 呂詠祺",
         file_url: "",
         file_format: "",
         google_form_url: "",
@@ -691,7 +754,7 @@
         category: "公告區",
         item_type: "notice",
         description: "防汛期間請各當班同仁每日落實船外機試動並填報於搶救組登記簿。",
-        handler: "隊員 蔡信宏",
+        handler: "小隊長 王建仁",
         file_url: "",
         file_format: "",
         google_form_url: "https://forms.gle/sampleFloodNoticeForm",
@@ -704,7 +767,7 @@
         category: "救護組",
         item_type: "google_form",
         description: "請各救護責任區同仁於每次領取點滴、紗布、抽吸管等耗材後即時填報以利統整請領。",
-        handler: "隊員 許承翰 (救護承辦)",
+        handler: "隊員 楊安凱",
         file_url: "",
         file_format: "",
         google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleEMSForm/viewform",
@@ -717,8 +780,8 @@
         category: "救護組",
         item_type: "blank_form",
         description: "含 AED、生理監視器、氧氣鋼瓶壓力、三合一抽吸器每日檢核標準格式。",
-        handler: "隊員 許承翰",
-        file_url: "https://drive.google.com/file/d/sample-ems-checklist/view?usp=sharing",
+        handler: "隊員 鄭舒萍",
+        file_url: "https://drive.google.com/file/d/sample-ems-checklist-id/view?usp=sharing",
         file_format: "XLSX",
         google_form_url: "",
         is_pinned: 0,
@@ -730,8 +793,8 @@
         category: "救護組",
         item_type: "doc",
         description: "115年最新修訂到院前急救品質管制與電擊貼片位置指引手冊。",
-        handler: "隊員 許承翰",
-        file_url: "https://drive.google.com/file/d/sample-ohca-sop/view?usp=sharing",
+        handler: "隊員 李哲宇",
+        file_url: "https://drive.google.com/file/d/sample-ohca-sop-id/view?usp=sharing",
         file_format: "PDF",
         google_form_url: "",
         is_pinned: 0,
@@ -743,8 +806,8 @@
         category: "救護組",
         item_type: "blank_form",
         description: "轄區學校、公司行號提出急救技能宣導申請專用填寫表格與回報單。",
-        handler: "隊員 許承翰",
-        file_url: "https://drive.google.com/file/d/sample-cpr-request/view?usp=sharing",
+        handler: "隊員 張嘉明",
+        file_url: "https://drive.google.com/file/d/sample-cpr-request-form/view?usp=sharing",
         file_format: "DOCX",
         google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleCPRForm/viewform",
         is_pinned: 0,
@@ -756,7 +819,7 @@
         category: "搶救組",
         item_type: "blank_form",
         description: "幫浦試水、底盤五油三水、空氣呼吸器 SCBA 氣瓶氣壓定期檢查表。",
-        handler: "隊員 陳志強 (搶救承辦)",
+        handler: "小隊長 陳永興",
         file_url: "https://drive.google.com/file/d/sample-fire-truck-checklist/view?usp=sharing",
         file_format: "XLSX",
         google_form_url: "",
@@ -769,7 +832,7 @@
         category: "搶救組",
         item_type: "google_form",
         description: "分隊各責任區巡查水源回報表單，如有損壞、埋沒請附上拍照座標上傳。",
-        handler: "隊員 陳志強",
+        handler: "隊員 侯元豐",
         file_url: "",
         file_format: "",
         google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleHydrantForm/viewform",
@@ -782,7 +845,7 @@
         category: "搶救組",
         item_type: "doc",
         description: "火場入室人員管制板登錄規範及緊急求救 MAYDAY 處置程序手冊。",
-        handler: "隊員 陳志強",
+        handler: "隊員 張峰誌",
         file_url: "https://drive.google.com/file/d/sample-ric-sop-handbook/view?usp=sharing",
         file_format: "PDF",
         google_form_url: "",
@@ -795,7 +858,7 @@
         category: "搶救組",
         item_type: "blank_form",
         description: "夜間協勤值班及災害現場支援義消幹部與隊員簽到核銷表格。",
-        handler: "隊員 陳志強",
+        handler: "隊員 林俊璋",
         file_url: "https://drive.google.com/file/d/sample-volunteer-signin/view?usp=sharing",
         file_format: "XLSX",
         google_form_url: "",
@@ -808,7 +871,7 @@
         category: "預防組",
         item_type: "blank_form",
         description: "甲乙丙類列管場所查驗專用複查表，含火警自動警報設備與室內栓試水數據欄。",
-        handler: "隊員 黃建智 (預防承辦)",
+        handler: "隊員 洪郁智",
         file_url: "https://drive.google.com/file/d/sample-prevention-check/view?usp=sharing",
         file_format: "XLSX",
         google_form_url: "",
@@ -821,7 +884,7 @@
         category: "預防組",
         item_type: "google_form",
         description: "宣導完畢請於24小時內填寫宣導場次、人數並上傳現場活動照片。",
-        handler: "隊員 黃建智",
+        handler: "隊員 王倚鍠",
         file_url: "",
         file_format: "",
         google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-samplePreventionResult/viewform",
@@ -834,7 +897,7 @@
         category: "預防組",
         item_type: "doc",
         description: "供分隊同仁外出安檢時查閱法規標準與開立限改單依據。",
-        handler: "隊員 黃建智",
+        handler: "隊員 沈峻億",
         file_url: "https://drive.google.com/file/d/sample-fire-regulation-guide/view?usp=sharing",
         file_format: "PDF",
         google_form_url: "",
@@ -847,7 +910,7 @@
         category: "行政組",
         item_type: "blank_form",
         description: "填寫完畢請送交分隊長簽核後，交由總收發同仁登錄大隊排班表。",
-        handler: "隊員 張雅晴 (行政承辦)",
+        handler: "隊員 王意婷",
         file_url: "https://drive.google.com/file/d/sample-leave-exchange-form/view?usp=sharing",
         file_format: "DOCX",
         google_form_url: "",
@@ -860,7 +923,7 @@
         category: "行政組",
         item_type: "blank_form",
         description: "包含油卡登錄卡號、里程數、公務出勤事由統計。",
-        handler: "隊員 張雅晴",
+        handler: "隊員 洪偉鈞",
         file_url: "https://drive.google.com/file/d/sample-vehicle-mileage-sheet/view?usp=sharing",
         file_format: "XLSX",
         google_form_url: "",
@@ -873,7 +936,7 @@
         category: "行政組",
         item_type: "google_form",
         description: "文具、印表機碳粉、值班台生活消耗品採購請先填報登記。",
-        handler: "隊員 張雅晴",
+        handler: "隊員 莊詠翔",
         file_url: "",
         file_format: "",
         google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleAdminSupplyRequest/viewform",
@@ -1214,11 +1277,11 @@
                 >
                   <div class="flex items-center gap-2 overflow-hidden">
                     <i class="${fileIcon} text-base shrink-0"></i>
-                    <span class="truncate font-medium">Google 雲端硬碟空白表格</span>
+                    <span class="truncate font-medium">${item.file_format === 'LINK' ? '分隊雲端共用硬碟 (上傳/查閱)' : 'Google 雲端硬碟空白表格'}</span>
                   </div>
                   <div class="flex items-center gap-1.5 shrink-0 ml-2">
                     <span class="bg-emerald-600 text-white rounded-lg px-2 py-0.5 text-[11px] font-bold shadow-sm group-hover/btn:bg-emerald-700 flex items-center gap-1">
-                      <i class="fa-solid fa-cloud-arrow-down"></i> 下載 / 開啟
+                      <i class="fa-solid ${item.file_format === 'LINK' ? 'fa-folder-open' : 'fa-cloud-arrow-down'}"></i> ${item.file_format === 'LINK' ? '開啟硬碟' : '下載 / 開啟'}
                     </span>
                   </div>
                 </a>
@@ -1261,6 +1324,17 @@
       }).join("");
     }
 
+    function handleHandlerChange() {
+      const select = document.getElementById("formHandler");
+      const customInput = document.getElementById("customHandlerInput");
+      if (select.value === "custom") {
+        customInput.classList.remove("hidden");
+        customInput.focus();
+      } else {
+        customInput.classList.add("hidden");
+      }
+    }
+
     // Modal Control
     function openModal(isEdit = false) {
       document.getElementById("itemModal").classList.remove("hidden");
@@ -1272,6 +1346,8 @@
         document.getElementById("formCategory").value = currentCategory !== "全部" ? currentCategory : "救護組";
         document.getElementById("formItemType").value = "blank_form";
         document.getElementById("driveHelpBox").classList.add("hidden");
+        document.getElementById("customHandlerInput").classList.add("hidden");
+        document.getElementById("customHandlerInput").value = "";
       }
     }
 
@@ -1313,7 +1389,29 @@
       document.getElementById("formTitle").value = item.title;
       document.getElementById("formCategory").value = item.category;
       document.getElementById("formItemType").value = item.item_type;
-      document.getElementById("formHandler").value = item.handler || "";
+      
+      // Handle dropdown matching or custom input
+      const handlerSelect = document.getElementById("formHandler");
+      const customInput = document.getElementById("customHandlerInput");
+      const handlerVal = item.handler || "";
+      let matched = false;
+      for (let opt of handlerSelect.options) {
+        if (opt.value && opt.value === handlerVal) {
+          handlerSelect.value = handlerVal;
+          matched = true;
+          break;
+        }
+      }
+      if (!matched && handlerVal) {
+        handlerSelect.value = "custom";
+        customInput.value = handlerVal;
+        customInput.classList.remove("hidden");
+      } else {
+        if (!handlerVal) handlerSelect.value = "";
+        customInput.classList.add("hidden");
+        customInput.value = "";
+      }
+
       document.getElementById("formFileUrl").value = item.file_url || "";
       document.getElementById("formFileFormat").value = item.file_format || "XLSX";
       document.getElementById("formGoogleUrl").value = item.google_form_url || "";
@@ -1327,11 +1425,20 @@
       const editId = document.getElementById("editItemId").value;
       const todayStr = new Date().toISOString().split("T")[0];
 
+      const handlerSelect = document.getElementById("formHandler");
+      const customInput = document.getElementById("customHandlerInput");
+      let handlerText = "";
+      if (handlerSelect.value === "custom") {
+        handlerText = customInput.value.trim() || "其他人員";
+      } else {
+        handlerText = handlerSelect.value || "分隊承辦";
+      }
+
       const itemData = {
         title: document.getElementById("formTitle").value.trim(),
         category: document.getElementById("formCategory").value,
         item_type: document.getElementById("formItemType").value,
-        handler: document.getElementById("formHandler").value.trim(),
+        handler: handlerText,
         file_url: document.getElementById("formFileUrl").value.trim(),
         file_format: document.getElementById("formFileFormat").value,
         google_form_url: document.getElementById("formGoogleUrl").value.trim(),
