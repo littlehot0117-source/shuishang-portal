@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>嘉義縣消防局 第一大隊水上分隊 業務面板 (雲端版)</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚒</text></svg>">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            fire: {
+              50: '#fef2f2',
+              100: '#fee2e2',
+              500: '#ef4444',
+              600: '#dc2626',
+              700: '#b91c1c',
+              800: '#991b1b',
+              900: '#7f1d1d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    body {
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .badge-ems { background-color: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+    .badge-rescue { background-color: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+    .badge-prevention { background-color: #d1fae5; color: #047857; border-color: #a7f3d0; }
+    .badge-admin { background-color: #ede9fe; color: #5b21b6; border-color: #ddd6fe; }
+    .badge-notice { background-color: #ffedd5; color: #c2410c; border-color: #fed7aa; }
+    
+    .tab-active {
+      border-bottom: 3px solid #dc2626;
+      color: #b91c1c;
+      font-weight: 700;
+      background-color: #ffffff;
+    }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .glass-header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- Top Emergency & System Header -->
+  <header class="glass-header text-white shadow-lg sticky top-0 z-40 border-b-4 border-red-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+        
+        <!-- Logo & Station Name -->
+        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-amber-600 flex items-center justify-center shadow-md shadow-red-900/30 ring-2 ring-white/20">
+              <i class="fa-solid fa-fire-extinguisher text-2xl text-white"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs tracking-wider uppercase px-2 py-0.5 rounded bg-red-600 font-bold text-white shadow-sm">嘉義縣消防局</span>
+                <span class="text-xs text-slate-300">第一大隊</span>
+              </div>
+              <h1 class="text-xl md:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+                水上分隊業務面板
+                <span class="text-xs font-normal px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 雲端在線
+                </span>
+              </h1>
+            </div>
+          </div>
+          
+          <!-- Mobile action button -->
+          <div class="md:hidden flex items-center gap-2">
+            <button onclick="openDataModal()" title="資料管理與匯出" class="bg-slate-800 border border-slate-700 text-slate-200 p-2 rounded-lg text-sm font-semibold shadow">
+              <i class="fa-solid fa-sliders"></i>
+            </button>
+            <button onclick="openModal()" title="新增業務" class="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg text-sm font-semibold shadow flex items-center gap-1">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Clock & Controls -->
+        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+          <div class="hidden lg:flex flex-col text-right">
+            <div id="liveClockDate" class="text-xs text-slate-300 font-medium">載入時間中...</div>
+            <div id="liveClockTime" class="text-lg font-bold font-mono text-amber-400 tracking-wider">00:00:00</div>
+          </div>
+
+          <!-- Deploy Guide Button -->
+          <button onclick="openDeployGuideModal()" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg font-semibold flex items-center gap-1.5 transition">
+            <i class="fa-brands fa-github text-white"></i>
+            <span class="hidden sm:inline">部署到 GitHub Pages</span>
+            <span class="sm:hidden">部署教學</span>
+          </button>
+
+          <!-- Data Management Button -->
+          <button onclick="openDataModal()" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg font-semibold flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-cloud-arrow-down text-cyan-400"></i>
+            <span>資料管理 / 匯出</span>
+          </button>
+
+          <!-- Add Item Button (Desktop) -->
+          <button onclick="openModal()" class="hidden md:flex items-center gap-2 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white font-bold px-4 py-2 rounded-lg shadow-md hover:shadow-red-600/30 transition transform active:scale-95 text-xs lg:text-sm">
+            <i class="fa-solid fa-circle-plus text-base"></i>
+            <span>承辦人新增業務 / 表單</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Marquee / Station Announcement Banner -->
+  <div class="bg-amber-500/10 border-b border-amber-300/40 px-4 py-2">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 text-xs md:text-sm text-amber-900">
+      <div class="flex items-center gap-2 font-bold shrink-0">
+        <span class="bg-amber-500 text-slate-900 px-2 py-0.5 rounded text-xs uppercase font-extrabold flex items-center gap-1 shadow-sm">
+          <i class="fa-solid fa-bullhorn animate-bounce"></i> 分隊公告叮嚀
+        </span>
+      </div>
+      <div class="overflow-hidden whitespace-nowrap w-full text-slate-700 font-medium">
+        <marquee behavior="scroll" direction="left" scrollamount="4" id="noticeMarquee">
+          歡迎使用水上分隊業務面板雲端版！本面板支援免伺服器靜態部署於 GitHub Pages，空白表格皆串接 Google 雲端硬碟與 Google 表單，隨點隨填！
+        </marquee>
+      </div>
+      <div class="shrink-0">
+        <button onclick="switchTab('公告區')" class="text-xs text-red-600 hover:text-red-800 font-semibold underline">查看全部公告</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
+    
+    <!-- Top Stats Counter Strip -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+      
+      <div onclick="switchTab('全部')" class="cursor-pointer bg-white p-3 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 hover:shadow transition flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
+          <i class="fa-solid fa-layer-group text-lg"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-500 font-semibold">全部業務</div>
+          <div id="statTotal" class="text-lg font-bold text-slate-800">0</div>
+        </div>
+      </div>
+
+      <div onclick="switchTab('救護組')" class="cursor-pointer bg-white p-3 rounded-xl shadow-sm border border-sky-100 hover:border-sky-400 hover:shadow transition flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-sky-50 flex items-center justify-center text-sky-600">
+          <i class="fa-solid fa-truck-medical text-lg"></i>
+        </div>
+        <div>
+          <div class="text-xs text-sky-700 font-semibold">救護組</div>
+          <div id="statEms" class="text-lg font-bold text-sky-800">0</div>
+        </div>
+      </div>
+
+      <div onclick="switchTab('搶救組')" class="cursor-pointer bg-white p-3 rounded-xl shadow-sm border border-red-100 hover:border-red-400 hover:shadow transition flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+          <i class="fa-solid fa-fire-flame-curved text-lg"></i>
+        </div>
+        <div>
+          <div class="text-xs text-red-700 font-semibold">搶救組</div>
+          <div id="statRescue" class="text-lg font-bold text-red-800">0</div>
+        </div>
+      </div>
+
+      <div onclick="switchTab('預防組')" class="cursor-pointer bg-white p-3 rounded-xl shadow-sm border border-emerald-100 hover:border-emerald-400 hover:shadow transition flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+          <i class="fa-solid fa-shield-halved text-lg"></i>
+        </div>
+        <div>
+          <div class="text-xs text-emerald-700 font-semibold">預防組</div>
+          <div id="statPrevention" class="text-lg font-bold text-emerald-800">0</div>
+        </div>
+      </div>
+
+      <div onclick="switchTab('行政組')" class="cursor-pointer bg-white p-3 rounded-xl shadow-sm border border-indigo-100 hover:border-indigo-400 hover:shadow transition flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+          <i class="fa-solid fa-folder-open text-lg"></i>
+        </div>
+        <div>
+          <div class="text-xs text-indigo-700 font-semibold">行政組</div>
+          <div id="statAdmin" class="text-lg font-bold text-indigo-800">0</div>
+        </div>
+      </div>
+
+      <div onclick="switchTab('公告區')" class="cursor-pointer bg-white p-3 rounded-xl shadow-sm border border-amber-100 hover:border-amber-400 hover:shadow transition flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600">
+          <i class="fa-solid fa-bullhorn text-lg"></i>
+        </div>
+        <div>
+          <div class="text-xs text-amber-700 font-semibold">公告區</div>
+          <div id="statNotice" class="text-lg font-bold text-amber-800">0</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Navigation Tabs for the 5 Sections -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+      
+      <!-- Primary Tabs -->
+      <div class="flex overflow-x-auto border-b border-slate-200 bg-slate-50/50 scrollbar-none">
+        
+        <button onclick="switchTab('全部')" id="tab-全部" class="tab-btn px-5 py-3.5 text-sm flex items-center gap-2 whitespace-nowrap transition border-b-2 border-transparent text-slate-600 hover:text-slate-900 tab-active">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>全部業務項目</span>
+          <span id="badge-tab-全部" class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-slate-200 text-slate-700">0</span>
+        </button>
+
+        <button onclick="switchTab('救護組')" id="tab-救護組" class="tab-btn px-5 py-3.5 text-sm flex items-center gap-2 whitespace-nowrap transition border-b-2 border-transparent text-slate-600 hover:text-sky-700">
+          <i class="fa-solid fa-truck-medical text-sky-600"></i>
+          <span>🚑 救護組</span>
+          <span id="badge-tab-救護組" class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800">0</span>
+        </button>
+
+        <button onclick="switchTab('搶救組')" id="tab-搶救組" class="tab-btn px-5 py-3.5 text-sm flex items-center gap-2 whitespace-nowrap transition border-b-2 border-transparent text-slate-600 hover:text-red-700">
+          <i class="fa-solid fa-fire-extinguisher text-red-600"></i>
+          <span>🚒 搶救組</span>
+          <span id="badge-tab-搶救組" class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800">0</span>
+        </button>
+
+        <button onclick="switchTab('預防組')" id="tab-預防組" class="tab-btn px-5 py-3.5 text-sm flex items-center gap-2 whitespace-nowrap transition border-b-2 border-transparent text-slate-600 hover:text-emerald-700">
+          <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+          <span>🛡️ 預防組</span>
+          <span id="badge-tab-預防組" class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">0</span>
+        </button>
+
+        <button onclick="switchTab('行政組')" id="tab-行政組" class="tab-btn px-5 py-3.5 text-sm flex items-center gap-2 whitespace-nowrap transition border-b-2 border-transparent text-slate-600 hover:text-indigo-700">
+          <i class="fa-solid fa-folder-closed text-indigo-600"></i>
+          <span>📁 行政組</span>
+          <span id="badge-tab-行政組" class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">0</span>
+        </button>
+
+        <button onclick="switchTab('公告區')" id="tab-公告區" class="tab-btn px-5 py-3.5 text-sm flex items-center gap-2 whitespace-nowrap transition border-b-2 border-transparent text-slate-600 hover:text-amber-700">
+          <i class="fa-solid fa-bullhorn text-amber-600"></i>
+          <span>📢 公告區</span>
+          <span id="badge-tab-公告區" class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">0</span>
+        </button>
+
+      </div>
+
+      <!-- Filters & Search Toolbar -->
+      <div class="p-4 bg-white flex flex-col md:flex-row items-center justify-between gap-4">
+        
+        <!-- Type Filter Pills -->
+        <div class="flex items-center gap-2 flex-wrap w-full md:w-auto">
+          <span class="text-xs font-bold text-slate-400 mr-1 uppercase">篩選類型:</span>
+          
+          <button onclick="filterType('全部')" class="type-pill px-3 py-1 text-xs font-semibold rounded-lg border transition bg-slate-800 text-white border-slate-800" data-type="全部">
+            全部
+          </button>
+          
+          <button onclick="filterType('blank_form')" class="type-pill px-3 py-1 text-xs font-semibold rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 transition" data-type="blank_form">
+            <i class="fa-solid fa-file-arrow-down text-emerald-600 mr-1"></i> 空白表格
+          </button>
+          
+          <button onclick="filterType('google_form')" class="type-pill px-3 py-1 text-xs font-semibold rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 transition" data-type="google_form">
+            <i class="fa-brands fa-google text-blue-500 mr-1"></i> Google 表單
+          </button>
+          
+          <button onclick="filterType('doc')" class="type-pill px-3 py-1 text-xs font-semibold rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 transition" data-type="doc">
+            <i class="fa-solid fa-book-bookmark text-amber-600 mr-1"></i> 業務指引/手冊
+          </button>
+
+          <button onclick="filterType('notice')" class="type-pill px-3 py-1 text-xs font-semibold rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 transition" data-type="notice">
+            <i class="fa-solid fa-bell text-red-500 mr-1"></i> 重要公告
+          </button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative w-full md:w-80">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+          </div>
+          <input 
+            type="text" 
+            id="searchInput" 
+            oninput="handleSearch()"
+            placeholder="搜尋業務、表格名稱、承辦人..." 
+            class="w-full pl-9 pr-8 py-1.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition"
+          >
+          <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Active Filter & Status Indicator -->
+    <div class="flex items-center justify-between mb-4 px-1">
+      <div class="flex items-center gap-2">
+        <h2 id="currentViewTitle" class="text-lg font-bold text-slate-800 flex items-center gap-2">
+          <span>全部業務項目</span>
+        </h2>
+        <span id="filteredCountText" class="text-xs font-medium text-slate-500 bg-slate-200 px-2 py-0.5 rounded-full">共 0 項</span>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <button onclick="openDeployGuideModal()" class="text-xs text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 px-2.5 py-1 rounded-md shadow-sm font-semibold flex items-center gap-1 transition">
+          <i class="fa-solid fa-cloud-arrow-up"></i> 如何發布到網路上？
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards Container -->
+    <div id="cardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Cards dynamically rendered here -->
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-700">嘉義縣消防局 第一大隊水上分隊</span>
+        <span>• 雲端業務管理平台 (純靜態免主機維護架構)</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>救災救護 • 24小時守護水上鄉民安全</span>
+        <button onclick="openDeployGuideModal()" class="text-red-600 hover:underline">
+          <i class="fa-brands fa-github"></i> GitHub Pages 部署手冊
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODAL: ADD / EDIT ITEM ==================== -->
+  <div id="itemModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden my-8 transform transition-all border border-slate-200">
+      
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white px-6 py-4 flex items-center justify-between border-b-2 border-red-500">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-red-600/30 border border-red-500/50 flex items-center justify-center text-red-400">
+            <i class="fa-solid fa-file-pen text-base"></i>
+          </div>
+          <div>
+            <h3 id="modalTitle" class="text-lg font-bold">承辦人發布 / 新增業務項目</h3>
+            <p class="text-xs text-slate-300">設定 Google 雲端硬碟檔案連結、Google 表單回報或業務指引</p>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Form -->
+      <form id="itemForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <input type="hidden" id="editItemId" value="">
+
+        <!-- Title -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            業務 / 表格名稱 <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="formTitle" 
+            required 
+            placeholder="例如：救護耗材領用登記、消防水箱車每日檢核表、同仁請假單" 
+            class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white"
+          >
+        </div>
+
+        <!-- Category & Item Type Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+              所屬組別 <span class="text-red-500">*</span>
+            </label>
+            <select id="formCategory" required class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white font-medium">
+              <option value="救護組">🚑 救護組</option>
+              <option value="搶救組">🚒 搶救組</option>
+              <option value="預防組">🛡️ 預防組</option>
+              <option value="行政組">📁 行政組</option>
+              <option value="公告區">📢 公告區</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+              項目類型 <span class="text-red-500">*</span>
+            </label>
+            <select id="formItemType" required class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white font-medium">
+              <option value="blank_form">📄 空白表格 (提供檔案下載)</option>
+              <option value="google_form">📝 Google 表單 (線上填報連結)</option>
+              <option value="doc">📚 業務指引 / 參考資料</option>
+              <option value="notice">🔔 重要公告 / 交接叮嚀</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Handler Name & Pinned Checkbox -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+              業務承辦人 (隊員姓名 / 職稱)
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                <i class="fa-solid fa-user-shield text-xs"></i>
+              </span>
+              <input 
+                type="text" 
+                id="formHandler" 
+                placeholder="例如：隊員 許承翰" 
+                class="w-full pl-8 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white"
+              >
+            </div>
+          </div>
+
+          <div class="flex items-center pt-5">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="formIsPinned" class="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500">
+              <span class="text-xs font-bold text-slate-700 flex items-center gap-1">
+                <i class="fa-solid fa-thumbtack text-amber-500"></i> 置頂本項目 (優先排在前方)
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Google Drive File Download Link -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-slate-700 uppercase">
+              Google 雲端硬碟檔案連結 / 實體表格下載網址
+            </label>
+            <span class="text-[11px] text-emerald-600 font-semibold cursor-pointer hover:underline" onclick="toggleDriveHelp()">
+              <i class="fa-solid fa-circle-question"></i> 如何取得雲端下載連結？
+            </span>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2">
+            <div class="col-span-3 relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                <i class="fa-brands fa-google-drive text-xs text-emerald-600"></i>
+              </span>
+              <input 
+                type="url" 
+                id="formFileUrl" 
+                placeholder="https://drive.google.com/file/d/... 或公開雲端檔案連結" 
+                class="w-full pl-8 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white font-mono text-xs"
+              >
+            </div>
+
+            <div class="col-span-1">
+              <select id="formFileFormat" class="w-full px-2 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white font-bold">
+                <option value="XLSX">Excel (.xlsx)</option>
+                <option value="DOCX">Word (.docx)</option>
+                <option value="PDF">PDF (.pdf)</option>
+                <option value="CSV">CSV (.csv)</option>
+                <option value="ZIP">壓縮檔 (.zip)</option>
+                <option value="LINK">雲端資料夾</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="driveHelpBox" class="hidden mt-2 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 space-y-1">
+            <p class="font-bold"><i class="fa-brands fa-google-drive"></i> Google 雲端硬碟檔案分享 3 步驟：</p>
+            <ol class="list-decimal list-inside space-y-0.5 text-[11px] text-emerald-900">
+              <li>在 Google 雲端硬碟中，對檔案點右鍵 ➜ 點選「共用」➜「共用」。</li>
+              <li>將「一般存取權」改為<strong>「知道連結的任何人」</strong>，角色設為<strong>「檢視者」</strong>。</li>
+              <li>點擊「複製連結」後貼至上方欄位即可！</li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Google Form URL -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            Google 表單網址 (線上回報專用)
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+              <i class="fa-brands fa-google text-xs text-blue-500"></i>
+            </span>
+            <input 
+              type="url" 
+              id="formGoogleUrl" 
+              placeholder="https://forms.gle/... 或 Google Forms 填報網址" 
+              class="w-full pl-8 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white font-mono text-xs"
+            >
+          </div>
+        </div>
+
+        <!-- Description / Instructions -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">
+            業務說明 / 填表注意事項
+          </label>
+          <textarea 
+            id="formDescription" 
+            rows="3" 
+            placeholder="請補充說明表格填寫對象、繳交期限、或辦理注意事項..." 
+            class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white"
+          ></textarea>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="pt-3 border-t border-slate-200 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
+            取消
+          </button>
+          <button type="submit" id="submitBtn" class="px-5 py-2 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-md transition flex items-center gap-1.5">
+            <i class="fa-solid fa-check"></i>
+            <span id="submitBtnText">確定儲存</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: DATA MANAGEMENT & EXPORT ==================== -->
+  <div id="dataModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200">
+      
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200">
+        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-database text-red-600"></i> 資料管理、備份與匯出
+        </h3>
+        <button onclick="closeDataModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs text-slate-600">
+        <p class="leading-relaxed">
+          由於本面板為純靜態架構，當您在瀏覽器中新增或編輯項目時，資料會自動儲存在您的瀏覽器中。若要讓<strong>全體分隊同仁在 GitHub Pages 上看到最新資料</strong>，請依照下方步驟：
+        </p>
+
+        <!-- Action 1: Export data.json -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between gap-3">
+          <div>
+            <div class="font-bold text-slate-800 text-sm">步驟 1：下載最新 data.json</div>
+            <p class="text-slate-500 mt-0.5">將目前面板上的所有業務與表單資料打包下載。</p>
+          </div>
+          <button onclick="exportDataJson()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-lg text-xs shrink-0 shadow-sm flex items-center gap-1.5">
+            <i class="fa-solid fa-download"></i> 下載 data.json
+          </button>
+        </div>
+
+        <!-- Action 2: Import data.json -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between gap-3">
+          <div>
+            <div class="font-bold text-slate-800 text-sm">手動匯入自訂 JSON 檔案</div>
+            <p class="text-slate-500 mt-0.5">選擇先前備份的 data.json 檔案快速覆蓋還原。</p>
+          </div>
+          <label class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-2 rounded-lg text-xs shrink-0 shadow-sm cursor-pointer flex items-center gap-1.5">
+            <i class="fa-solid fa-upload"></i> 選擇檔案匯入
+            <input type="file" accept=".json" onchange="importDataJson(event)" class="hidden">
+          </label>
+        </div>
+
+        <!-- Action 3: Reset to defaults -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-center justify-between gap-3">
+          <div>
+            <div class="font-bold text-slate-800 text-sm">重置為分隊預設範本資料</div>
+            <p class="text-slate-500 mt-0.5">清除本機自訂修改，重新載入 16 筆水上分隊初始業務範本。</p>
+          </div>
+          <button onclick="resetToDefaultData()" class="bg-slate-200 hover:bg-red-100 hover:text-red-700 text-slate-700 font-bold px-3 py-2 rounded-lg text-xs shrink-0 transition">
+            重置範本
+          </button>
+        </div>
+
+      </div>
+
+      <div class="mt-6 text-right">
+        <button onclick="closeDataModal()" class="px-4 py-2 bg-slate-800 text-white rounded-lg text-xs font-semibold">關閉視窗</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: DEPLOY GUIDE ==================== -->
+  <div id="deployGuideModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 border border-slate-200 my-8">
+      
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200">
+        <div class="flex items-center gap-2">
+          <i class="fa-brands fa-github text-xl text-slate-900"></i>
+          <h3 class="text-base font-bold text-slate-800">如何免費將業務面板發布至 GitHub Pages（3分鐘圖解）</h3>
+        </div>
+        <button onclick="closeDeployGuideModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs text-slate-600 max-h-[75vh] overflow-y-auto pr-2">
+        
+        <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-amber-900">
+          <p class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-star text-amber-500"></i> 什麼是 GitHub Pages？</p>
+          <p class="mt-1">GitHub 提供的免費靜態網站託管服務，支援 HTTPS 安全加密、24小時全年不中斷、全體分隊同仁在任何地方都能用手機或電腦直接開啟！</p>
+        </div>
+
+        <div class="space-y-3">
+          
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+            <h4 class="font-bold text-slate-800 text-sm mb-1">步驟 1：在 GitHub 建立一個公開倉庫 (Repository)</h4>
+            <p>1. 前往 <a href="https://github.com" target="_blank" class="text-blue-600 underline font-bold">github.com</a> 登入或免費註冊帳號。</p>
+            <p>2. 點擊右上角的 <strong>「+」➜「New repository」</strong>。</p>
+            <p>3. Repository name 輸入例如：<code class="bg-slate-200 px-1 py-0.5 rounded font-bold text-red-600">shuishang-portal</code>。</p>
+            <p>4. 勾選 <strong>Public (公開)</strong>，其他維持預設，點擊「Create repository」。</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+            <h4 class="font-bold text-slate-800 text-sm mb-1">步驟 2：直接在網頁上傳專案檔案</h4>
+            <p>1. 在新建立的倉庫頁面中，點擊 <strong>「uploading an existing file」</strong>（上傳現有檔案）。</p>
+            <p>2. 將本專案資料夾內的檔案直接拖曳進瀏覽器：</p>
+            <ul class="list-disc list-inside mt-1 space-y-0.5 font-mono text-slate-700 bg-white p-2 rounded border border-slate-200">
+              <li><strong>index.html</strong> (最關鍵主頁面)</li>
+              <li><strong>data.json</strong> (初始業務與表單資料)</li>
+              <li><strong>README.md</strong> (說明文件)</li>
+            </ul>
+            <p class="mt-1">3. 點擊下方的綠色按鈕 <strong>「Commit changes」</strong> 完成儲存。</p>
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl">
+            <h4 class="font-bold text-slate-800 text-sm mb-1">步驟 3：一鍵開啟 GitHub Pages 網站</h4>
+            <p>1. 點擊倉庫頂部的 <strong>「Settings」</strong>（設定標籤）。</p>
+            <p>2. 在左側選單點選 <strong>「Pages」</strong>。</p>
+            <p>3. 在「Build and deployment」下的 Branch，將 <strong>None</strong> 切換為 <strong>main</strong>，目錄保持 <strong>/ (root)</strong>。</p>
+            <p>4. 點擊 <strong>「Save」</strong>。</p>
+            <p class="mt-2 text-emerald-700 font-bold">🎉 等待約 1 分鐘，重新整理頁面，頂部就會顯示專屬的網址：<br>
+              <code class="bg-emerald-50 text-emerald-800 px-2 py-1 rounded border border-emerald-300 inline-block mt-1">https://您的帳號.github.io/shuishang-portal/</code>
+            </p>
+          </div>
+
+          <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-900">
+            <h4 class="font-bold text-sm mb-1"><i class="fa-solid fa-lightbulb"></i> 更快速的方法：Netlify Drop (10秒免註冊部署)</h4>
+            <p>若暫不想建立 GitHub 帳號，可前往 <a href="https://app.netlify.com/drop" target="_blank" class="underline font-bold text-blue-700">app.netlify.com/drop</a>，直接把包含 <code class="font-bold">index.html</code> 與 <code class="font-bold">data.json</code> 的資料夾整包拖曳進去，10 秒內即可獲得一組免費的 HTTPS 專屬永久網址！</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="mt-5 text-right">
+        <button onclick="closeDeployGuideModal()" class="px-5 py-2 bg-slate-800 text-white rounded-lg text-xs font-semibold">我知道了</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ==================== FRONTEND JAVASCRIPT ==================== -->
+  <script>
+    // Embedded Default Data Fallback (16 Authentic Items)
+    const DEFAULT_SEED_DATA = [
+      {
+        id: 1,
+        title: "【重要通知】本月水上分隊常年訓練梯次與救技競賽日程表",
+        category: "公告區",
+        item_type: "notice",
+        description: "請各位同仁留意各自梯次及個人防護裝備整備，當日準時於車庫前集合完畢。",
+        handler: "分隊長",
+        file_url: "",
+        file_format: "",
+        google_form_url: "",
+        is_pinned: 1,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 2,
+        title: "【防汛警示】八掌溪與赤蘭溪警戒水位巡查及橡皮艇試動要點",
+        category: "公告區",
+        item_type: "notice",
+        description: "防汛期間請各當班同仁每日落實船外機試動並填報於搶救組登記簿。",
+        handler: "隊員 蔡信宏",
+        file_url: "",
+        file_format: "",
+        google_form_url: "https://forms.gle/sampleFloodNoticeForm",
+        is_pinned: 1,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 3,
+        title: "水上分隊 救護耗材與常備藥品每月領用登記",
+        category: "救護組",
+        item_type: "google_form",
+        description: "請各救護責任區同仁於每次領取點滴、紗布、抽吸管等耗材後即時填報以利統整請領。",
+        handler: "隊員 許承翰 (救護承辦)",
+        file_url: "",
+        file_format: "",
+        google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleEMSForm/viewform",
+        is_pinned: 1,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 4,
+        title: "救護車每日出勤裝備器材檢查紀錄表 (空白表)",
+        category: "救護組",
+        item_type: "blank_form",
+        description: "含 AED、生理監視器、氧氣鋼瓶壓力、三合一抽吸器每日檢核標準格式。",
+        handler: "隊員 許承翰",
+        file_url: "https://drive.google.com/file/d/sample-ems-checklist/view?usp=sharing",
+        file_format: "XLSX",
+        google_form_url: "",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 5,
+        title: "重大傷病及到院前心肺功能停止 (OHCA) 紀錄檢核作業指引",
+        category: "救護組",
+        item_type: "doc",
+        description: "115年最新修訂到院前急救品質管制與電擊貼片位置指引手冊。",
+        handler: "隊員 許承翰",
+        file_url: "https://drive.google.com/file/d/sample-ohca-sop/view?usp=sharing",
+        file_format: "PDF",
+        google_form_url: "",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 6,
+        title: "民間機關團體 CPR+AED 宣導推廣申請回報單",
+        category: "救護組",
+        item_type: "blank_form",
+        description: "轄區學校、公司行號提出急救技能宣導申請專用填寫表格與回報單。",
+        handler: "隊員 許承翰",
+        file_url: "https://drive.google.com/file/d/sample-cpr-request/view?usp=sharing",
+        file_format: "DOCX",
+        google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleCPRForm/viewform",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 7,
+        title: "消防水箱車 (水上11/12) 與水庫車裝備每日定期保養檢核表",
+        category: "搶救組",
+        item_type: "blank_form",
+        description: "幫浦試水、底盤五油三水、空氣呼吸器 SCBA 氣瓶氣壓定期檢查表。",
+        handler: "隊員 陳志強 (搶救承辦)",
+        file_url: "https://drive.google.com/file/d/sample-fire-truck-checklist/view?usp=sharing",
+        file_format: "XLSX",
+        google_form_url: "",
+        is_pinned: 1,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 8,
+        title: "水上鄉轄區地下消防栓與天然蓄水池水源查察回報系統",
+        category: "搶救組",
+        item_type: "google_form",
+        description: "分隊各責任區巡查水源回報表單，如有損壞、埋沒請附上拍照座標上傳。",
+        handler: "隊員 陳志強",
+        file_url: "",
+        file_format: "",
+        google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleHydrantForm/viewform",
+        is_pinned: 1,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 9,
+        title: "火場救災安全管制 (RIC) 與幕僚人員作業標準程序",
+        category: "搶救組",
+        item_type: "doc",
+        description: "火場入室人員管制板登錄規範及緊急求救 MAYDAY 處置程序手冊。",
+        handler: "隊員 陳志強",
+        file_url: "https://drive.google.com/file/d/sample-ric-sop-handbook/view?usp=sharing",
+        file_format: "PDF",
+        google_form_url: "",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 10,
+        title: "義消水上分隊協勤簽到與公服時數統計清冊",
+        category: "搶救組",
+        item_type: "blank_form",
+        description: "夜間協勤值班及災害現場支援義消幹部與隊員簽到核銷表格。",
+        handler: "隊員 陳志強",
+        file_url: "https://drive.google.com/file/d/sample-volunteer-signin/view?usp=sharing",
+        file_format: "XLSX",
+        google_form_url: "",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 11,
+        title: "水上鄉各類場所消防安全設備檢修申報複查紀錄表",
+        category: "預防組",
+        item_type: "blank_form",
+        description: "甲乙丙類列管場所查驗專用複查表，含火警自動警報設備與室內栓試水數據欄。",
+        handler: "隊員 黃建智 (預防承辦)",
+        file_url: "https://drive.google.com/file/d/sample-prevention-check/view?usp=sharing",
+        file_format: "XLSX",
+        google_form_url: "",
+        is_pinned: 1,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 12,
+        title: "轄區校園與社區防火防溺防震宣導成果登錄",
+        category: "預防組",
+        item_type: "google_form",
+        description: "宣導完畢請於24小時內填寫宣導場次、人數並上傳現場活動照片。",
+        handler: "隊員 黃建智",
+        file_url: "",
+        file_format: "",
+        google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-samplePreventionResult/viewform",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 13,
+        title: "防焰物品規制與液化石油氣場所查察規定手冊",
+        category: "預防組",
+        item_type: "doc",
+        description: "供分隊同仁外出安檢時查閱法規標準與開立限改單依據。",
+        handler: "隊員 黃建智",
+        file_url: "https://drive.google.com/file/d/sample-fire-regulation-guide/view?usp=sharing",
+        file_format: "PDF",
+        google_form_url: "",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 14,
+        title: "水上分隊同仁請假、公假與互換班登記單 (空白表)",
+        category: "行政組",
+        item_type: "blank_form",
+        description: "填寫完畢請送交分隊長簽核後，交由總收發同仁登錄大隊排班表。",
+        handler: "隊員 張雅晴 (行政承辦)",
+        file_url: "https://drive.google.com/file/d/sample-leave-exchange-form/view?usp=sharing",
+        file_format: "DOCX",
+        google_form_url: "",
+        is_pinned: 1,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 15,
+        title: "公務車輛加油與每月行車紀錄表 (空白表)",
+        category: "行政組",
+        item_type: "blank_form",
+        description: "包含油卡登錄卡號、里程數、公務出勤事由統計。",
+        handler: "隊員 張雅晴",
+        file_url: "https://drive.google.com/file/d/sample-vehicle-mileage-sheet/view?usp=sharing",
+        file_format: "XLSX",
+        google_form_url: "",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      },
+      {
+        id: 16,
+        title: "分隊辦公庶務耗材採購與零用金支領線上申請",
+        category: "行政組",
+        item_type: "google_form",
+        description: "文具、印表機碳粉、值班台生活消耗品採購請先填報登記。",
+        handler: "隊員 張雅晴",
+        file_url: "",
+        file_format: "",
+        google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleAdminSupplyRequest/viewform",
+        is_pinned: 0,
+        updated_at: "2026-10-13"
+      }
+    ];
+
+    // App State
+    let items = [];
+    let currentCategory = "全部";
+    let currentType = "全部";
+    let searchQuery = "";
+
+    // Initialization
+    window.addEventListener("DOMContentLoaded", async () => {
+      initClock();
+      await loadInitialData();
+      renderAll();
+    });
+
+    // Real-time ROC Clock
+    function initClock() {
+      function update() {
+        const now = new Date();
+        const rocYear = now.getFullYear() - 1911;
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const date = String(now.getDate()).padStart(2, '0');
+        const dayNames = ["日", "一", "二", "三", "四", "五", "六"];
+        const dayStr = "星期" + dayNames[now.getDay()];
+        
+        const hours = String(now.getHours()).padStart(2, '0');
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const secs = String(now.getSeconds()).padStart(2, '0');
+
+        const dateEl = document.getElementById("liveClockDate");
+        const timeEl = document.getElementById("liveClockTime");
+        if (dateEl) dateEl.innerText = `民國 ${rocYear} 年 ${month} 月 ${date} 日 (${dayStr})`;
+        if (timeEl) timeEl.innerText = `${hours}:${mins}:${secs}`;
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    // Load Data: LocalStorage > data.json > Embedded Fallback
+    async function loadInitialData() {
+      const localData = localStorage.getItem("shuishang_portal_items");
+      if (localData) {
+        try {
+          items = JSON.parse(localData);
+          return;
+        } catch (e) {
+          console.warn("Failed to parse local storage data:", e);
+        }
+      }
+
+      // Try fetching data.json
+      try {
+        const res = await fetch("./data.json");
+        if (res.ok) {
+          items = await res.json();
+          saveToLocalStorage();
+          return;
+        }
+      } catch (err) {
+        console.warn("Could not fetch data.json directly, using embedded seed data:", err);
+      }
+
+      // Use embedded seed data
+      items = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
+      saveToLocalStorage();
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem("shuishang_portal_items", JSON.stringify(items));
+    }
+
+    // Tab Switching
+    function switchTab(category) {
+      currentCategory = category;
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.remove("tab-active");
+      });
+      const activeBtn = document.getElementById(`tab-${category}`);
+      if (activeBtn) activeBtn.classList.add("tab-active");
+
+      renderCards();
+      updateViewTitle();
+    }
+
+    // Type Filter
+    function filterType(type) {
+      currentType = type;
+      document.querySelectorAll(".type-pill").forEach(pill => {
+        if (pill.dataset.type === type) {
+          pill.className = "type-pill px-3 py-1 text-xs font-semibold rounded-lg border transition bg-slate-800 text-white border-slate-800";
+        } else {
+          pill.className = "type-pill px-3 py-1 text-xs font-semibold rounded-lg border border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100 transition";
+        }
+      });
+      renderCards();
+      updateViewTitle();
+    }
+
+    // Search Handling
+    let searchDebounce = null;
+    function handleSearch() {
+      const val = document.getElementById("searchInput").value;
+      const clearBtn = document.getElementById("clearSearchBtn");
+      if (val) {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+      }
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(() => {
+        searchQuery = val.trim().toLowerCase();
+        renderCards();
+        updateViewTitle();
+      }, 200);
+    }
+
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("clearSearchBtn").classList.add("hidden");
+      searchQuery = "";
+      renderCards();
+      updateViewTitle();
+    }
+
+    // Update Counter Badges
+    function updateStats() {
+      const catCounts = {
+        "救護組": 0,
+        "搶救組": 0,
+        "預防組": 0,
+        "行政組": 0,
+        "公告區": 0
+      };
+
+      items.forEach(item => {
+        if (catCounts[item.category] !== undefined) {
+          catCounts[item.category]++;
+        }
+      });
+
+      document.getElementById("statTotal").innerText = items.length;
+      document.getElementById("statEms").innerText = catCounts["救護組"];
+      document.getElementById("statRescue").innerText = catCounts["搶救組"];
+      document.getElementById("statPrevention").innerText = catCounts["預防組"];
+      document.getElementById("statAdmin").innerText = catCounts["行政組"];
+      document.getElementById("statNotice").innerText = catCounts["公告區"];
+
+      document.getElementById("badge-tab-全部").innerText = items.length;
+      document.getElementById("badge-tab-救護組").innerText = catCounts["救護組"];
+      document.getElementById("badge-tab-搶救組").innerText = catCounts["搶救組"];
+      document.getElementById("badge-tab-預防組").innerText = catCounts["預防組"];
+      document.getElementById("badge-tab-行政組").innerText = catCounts["行政組"];
+      document.getElementById("badge-tab-公告區").innerText = catCounts["公告區"];
+    }
+
+    function updateViewTitle() {
+      const titleEl = document.getElementById("currentViewTitle");
+      const countEl = document.getElementById("filteredCountText");
+      
+      let titleText = currentCategory === "全部" ? "全部業務項目" : currentCategory;
+      if (currentType !== "全部") {
+        const typeLabels = {
+          "blank_form": "空白表格",
+          "google_form": "Google 表單",
+          "doc": "業務指引",
+          "notice": "重要公告"
+        };
+        titleText += ` • ${typeLabels[currentType] || currentType}`;
+      }
+      if (searchQuery) {
+        titleText += ` (搜尋: "${searchQuery}")`;
+      }
+      titleEl.innerHTML = `<span>${titleText}</span>`;
+
+      const filtered = getFilteredItems();
+      countEl.innerText = `共 ${filtered.length} 項`;
+    }
+
+    function getFilteredItems() {
+      return items.filter(item => {
+        if (currentCategory !== "全部" && item.category !== currentCategory) return false;
+        if (currentType !== "全部" && item.item_type !== currentType) return false;
+        if (searchQuery) {
+          const matchTitle = (item.title || "").toLowerCase().includes(searchQuery);
+          const matchDesc = (item.description || "").toLowerCase().includes(searchQuery);
+          const matchHandler = (item.handler || "").toLowerCase().includes(searchQuery);
+          if (!matchTitle && !matchDesc && !matchHandler) return false;
+        }
+        return true;
+      }).sort((a, b) => {
+        // Pinned first
+        if ((b.is_pinned || 0) !== (a.is_pinned || 0)) {
+          return (b.is_pinned || 0) - (a.is_pinned || 0);
+        }
+        return b.id - a.id;
+      });
+    }
+
+    function renderAll() {
+      updateStats();
+      updateViewTitle();
+      renderCards();
+    }
+
+    function getCategoryStyle(cat) {
+      switch (cat) {
+        case "救護組": return { border: "border-sky-200", badge: "badge-ems", icon: "fa-solid fa-truck-medical text-sky-600" };
+        case "搶救組": return { border: "border-red-200", badge: "badge-rescue", icon: "fa-solid fa-fire-extinguisher text-red-600" };
+        case "預防組": return { border: "border-emerald-200", badge: "badge-prevention", icon: "fa-solid fa-shield-halved text-emerald-600" };
+        case "行政組": return { border: "border-indigo-200", badge: "badge-admin", icon: "fa-solid fa-folder-closed text-indigo-600" };
+        case "公告區": return { border: "border-amber-200", badge: "badge-notice", icon: "fa-solid fa-bullhorn text-amber-600" };
+        default: return { border: "border-slate-200", badge: "bg-slate-100 text-slate-700", icon: "fa-solid fa-file" };
+      }
+    }
+
+    function getTypeBadge(type) {
+      switch (type) {
+        case "blank_form":
+          return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1"><i class="fa-solid fa-file-arrow-down"></i> 空白表格</span>`;
+        case "google_form":
+          return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1"><i class="fa-brands fa-google"></i> Google 表單</span>`;
+        case "doc":
+          return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1"><i class="fa-solid fa-book"></i> 業務指引</span>`;
+        case "notice":
+          return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1"><i class="fa-solid fa-bell"></i> 重要公告</span>`;
+        default:
+          return `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-slate-100 text-slate-700">業務</span>`;
+      }
+    }
+
+    function getFormatIcon(fmt) {
+      const f = (fmt || "").toUpperCase();
+      if (f === "XLSX" || f === "XLS") return "fa-regular fa-file-excel text-emerald-600";
+      if (f === "DOCX" || f === "DOC") return "fa-regular fa-file-word text-blue-600";
+      if (f === "PDF") return "fa-regular fa-file-pdf text-red-600";
+      if (f === "ZIP" || f === "RAR") return "fa-regular fa-file-zipper text-amber-600";
+      return "fa-brands fa-google-drive text-emerald-600";
+    }
+
+    function renderCards() {
+      const container = document.getElementById("cardsContainer");
+      const filtered = getFilteredItems();
+
+      if (!filtered || filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center bg-white rounded-2xl border border-dashed border-slate-300 p-8">
+            <div class="w-16 h-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3 text-2xl">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h4 class="text-base font-bold text-slate-700">目前沒有符合條件的業務項目</h4>
+            <p class="text-xs text-slate-400 mt-1">您可以點選上方「承辦人新增業務 / 表單」按鈕來建立新項目</p>
+            <button onclick="openModal()" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-bold shadow hover:bg-red-700">
+              <i class="fa-solid fa-plus mr-1"></i> 立即新增
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const catStyle = getCategoryStyle(item.category);
+        const typeBadge = getTypeBadge(item.item_type);
+        const isPinned = item.is_pinned === 1;
+        const hasFile = !!item.file_url;
+        const hasGoogleUrl = !!item.google_form_url;
+        const fileIcon = getFormatIcon(item.file_format);
+
+        return `
+          <div class="bg-white rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200 border ${isPinned ? 'border-amber-400 ring-2 ring-amber-400/20' : catStyle.border} flex flex-col justify-between relative group">
+            
+            <!-- Card Header & Badges -->
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${catStyle.badge}">
+                    ${item.category}
+                  </span>
+                  ${typeBadge}
+                  ${isPinned ? `
+                    <span class="px-2 py-0.5 rounded text-[11px] font-black bg-amber-500 text-slate-900 shadow-sm flex items-center gap-1">
+                      <i class="fa-solid fa-thumbtack"></i> 置頂
+                    </span>
+                  ` : ''}
+                </div>
+
+                <!-- Action Menu -->
+                <div class="flex items-center gap-1 text-slate-400">
+                  <button onclick="editItem(${item.id})" title="編輯此項目" class="hover:text-blue-600 p-1 rounded hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-pen-to-square text-xs"></i>
+                  </button>
+                  <button onclick="deleteItem(${item.id})" title="刪除此項目" class="hover:text-red-600 p-1 rounded hover:bg-slate-100 transition">
+                    <i class="fa-regular fa-trash-can text-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Title -->
+              <h3 class="text-base font-bold text-slate-800 tracking-tight leading-snug mb-1.5 group-hover:text-red-600 transition">
+                ${item.title}
+              </h3>
+
+              <!-- Description -->
+              ${item.description ? `
+                <p class="text-xs text-slate-600 mb-3 leading-relaxed line-clamp-2" title="${item.description}">
+                  ${item.description}
+                </p>
+              ` : '<div class="h-2"></div>'}
+
+              <!-- Metadata info (Handler & Date) -->
+              <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-100 mb-3">
+                <div class="flex items-center gap-1 font-medium text-slate-600">
+                  <i class="fa-solid fa-user-circle text-slate-400"></i>
+                  <span>${item.handler || '分隊承辦'}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <i class="fa-regular fa-clock text-slate-400"></i>
+                  <span>${item.updated_at || '115年'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Action Buttons Strip -->
+            <div class="space-y-2 pt-1">
+              
+              <!-- Download File Button (Google Drive / Cloud URL) -->
+              ${hasFile ? `
+                <a 
+                  href="${item.file_url}" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="w-full bg-slate-50 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-200 hover:border-emerald-300 font-semibold px-3 py-2 rounded-xl text-xs flex items-center justify-between transition group/btn"
+                >
+                  <div class="flex items-center gap-2 overflow-hidden">
+                    <i class="${fileIcon} text-base shrink-0"></i>
+                    <span class="truncate font-medium">Google 雲端硬碟空白表格</span>
+                  </div>
+                  <div class="flex items-center gap-1.5 shrink-0 ml-2">
+                    <span class="bg-emerald-600 text-white rounded-lg px-2 py-0.5 text-[11px] font-bold shadow-sm group-hover/btn:bg-emerald-700 flex items-center gap-1">
+                      <i class="fa-solid fa-cloud-arrow-down"></i> 下載 / 開啟
+                    </span>
+                  </div>
+                </a>
+              ` : ''}
+
+              <!-- Google Form Link Button -->
+              ${hasGoogleUrl ? `
+                <div class="flex items-center gap-1.5">
+                  <a 
+                    href="${item.google_form_url}" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-2 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition"
+                  >
+                    <i class="fa-brands fa-google"></i>
+                    <span>前往填寫 Google 表單</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-75"></i>
+                  </a>
+                  <button 
+                    onclick="copyToClipboard('${item.google_form_url}')" 
+                    title="複製表單網址" 
+                    class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl text-xs font-semibold border border-slate-200 transition shrink-0"
+                  >
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+              ` : ''}
+
+              <!-- Fallback if pure announcement -->
+              ${!hasFile && !hasGoogleUrl ? `
+                <div class="p-2 bg-slate-50 border border-slate-100 rounded-xl text-center text-xs text-slate-400 font-medium">
+                  <i class="fa-solid fa-check-circle text-emerald-500 mr-1"></i> 請全體同仁知悉照辦
+                </div>
+              ` : ''}
+
+            </div>
+
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Modal Control
+    function openModal(isEdit = false) {
+      document.getElementById("itemModal").classList.remove("hidden");
+      if (!isEdit) {
+        document.getElementById("modalTitle").innerText = "承辦人發布 / 新增業務項目";
+        document.getElementById("submitBtnText").innerText = "確定儲存發布";
+        document.getElementById("editItemId").value = "";
+        document.getElementById("itemForm").reset();
+        document.getElementById("formCategory").value = currentCategory !== "全部" ? currentCategory : "救護組";
+        document.getElementById("formItemType").value = "blank_form";
+        document.getElementById("driveHelpBox").classList.add("hidden");
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("itemModal").classList.add("hidden");
+    }
+
+    function toggleDriveHelp() {
+      const box = document.getElementById("driveHelpBox");
+      box.classList.toggle("hidden");
+    }
+
+    function openDataModal() {
+      document.getElementById("dataModal").classList.remove("hidden");
+    }
+
+    function closeDataModal() {
+      document.getElementById("dataModal").classList.add("hidden");
+    }
+
+    function openDeployGuideModal() {
+      document.getElementById("deployGuideModal").classList.remove("hidden");
+    }
+
+    function closeDeployGuideModal() {
+      document.getElementById("deployGuideModal").classList.add("hidden");
+    }
+
+    // Edit Item
+    function editItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+
+      openModal(true);
+      document.getElementById("modalTitle").innerText = "編輯業務項目內容";
+      document.getElementById("submitBtnText").innerText = "更新項目";
+      document.getElementById("editItemId").value = item.id;
+      
+      document.getElementById("formTitle").value = item.title;
+      document.getElementById("formCategory").value = item.category;
+      document.getElementById("formItemType").value = item.item_type;
+      document.getElementById("formHandler").value = item.handler || "";
+      document.getElementById("formFileUrl").value = item.file_url || "";
+      document.getElementById("formFileFormat").value = item.file_format || "XLSX";
+      document.getElementById("formGoogleUrl").value = item.google_form_url || "";
+      document.getElementById("formDescription").value = item.description || "";
+      document.getElementById("formIsPinned").checked = item.is_pinned === 1;
+    }
+
+    // Form Submit
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const editId = document.getElementById("editItemId").value;
+      const todayStr = new Date().toISOString().split("T")[0];
+
+      const itemData = {
+        title: document.getElementById("formTitle").value.trim(),
+        category: document.getElementById("formCategory").value,
+        item_type: document.getElementById("formItemType").value,
+        handler: document.getElementById("formHandler").value.trim(),
+        file_url: document.getElementById("formFileUrl").value.trim(),
+        file_format: document.getElementById("formFileFormat").value,
+        google_form_url: document.getElementById("formGoogleUrl").value.trim(),
+        description: document.getElementById("formDescription").value.trim(),
+        is_pinned: document.getElementById("formIsPinned").checked ? 1 : 0,
+        updated_at: todayStr
+      };
+
+      if (editId) {
+        // Update
+        const idx = items.findIndex(i => i.id === parseInt(editId));
+        if (idx !== -1) {
+          itemData.id = parseInt(editId);
+          items[idx] = itemData;
+          showToast("業務項目已成功更新！", "success");
+        }
+      } else {
+        // Create new
+        const maxId = items.reduce((max, i) => Math.max(max, i.id || 0), 0);
+        itemData.id = maxId + 1;
+        items.unshift(itemData);
+        showToast("業務項目已成功發布！", "success");
+      }
+
+      saveToLocalStorage();
+      closeModal();
+      renderAll();
+    }
+
+    // Delete Item
+    function deleteItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+
+      if (!confirm(`確定要刪除「${item.title}」嗎？`)) {
+        return;
+      }
+
+      items = items.filter(i => i.id !== id);
+      saveToLocalStorage();
+      showToast("已刪除該業務項目", "success");
+      renderAll();
+    }
+
+    // Export data.json
+    function exportDataJson() {
+      const jsonStr = JSON.stringify(items, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "data.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("已成功下載最新 data.json！", "success");
+    }
+
+    // Import data.json
+    function importDataJson(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (Array.isArray(parsed)) {
+            items = parsed;
+            saveToLocalStorage();
+            renderAll();
+            closeDataModal();
+            showToast("已成功匯入自訂業務資料！", "success");
+          } else {
+            showToast("匯入失敗：JSON 格式不符", "error");
+          }
+        } catch (err) {
+          showToast("匯入失敗：檔案非有效 JSON", "error");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Reset to Default Seed Data
+    function resetToDefaultData() {
+      if (!confirm("確定要重置為水上分隊初始預設範本資料嗎？\n您在瀏覽器中所作的自訂修改將被清空。")) {
+        return;
+      }
+      items = JSON.parse(JSON.stringify(DEFAULT_SEED_DATA));
+      saveToLocalStorage();
+      renderAll();
+      closeDataModal();
+      showToast("已恢復分隊初始範本資料", "success");
+    }
+
+    // Clipboard Copy
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("已複製 Google 表單連結至剪貼簿！", "success");
+      }).catch(() => {
+        const input = document.createElement("input");
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+        showToast("已複製連結！", "success");
+      });
+    }
+
+    // Toast helper
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      
+      let icon = "fa-solid fa-info-circle";
+      let bg = "bg-slate-800 text-white";
+      if (type === "success") {
+        icon = "fa-solid fa-circle-check text-emerald-400";
+        bg = "bg-slate-900 text-white border border-emerald-500/30";
+      } else if (type === "error") {
+        icon = "fa-solid fa-triangle-exclamation text-red-400";
+        bg = "bg-red-950 text-white border border-red-500/30";
+      }
+
+      toast.className = `${bg} px-4 py-3 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2.5 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto`;
+      toast.innerHTML = `<i class="${icon}"></i> <span>${message}</span>`;
+      
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.remove("translate-y-2", "opacity-0");
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-y-2");
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+  </script>
+
+</body>
+</html>
