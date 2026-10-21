@@ -90,9 +90,6 @@
             <a href="https://drive.google.com/drive/folders/1wRHAU_RGbo_IlvTzUOl5pzH90IC8VaKO?usp=drive_link" target="_blank" rel="noopener noreferrer" title="開啟分隊 Google 雲端上傳硬碟" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded-lg text-sm font-semibold shadow">
               <i class="fa-brands fa-google-drive"></i>
             </a>
-            <button onclick="openDataModal()" title="資料管理與匯出" class="bg-slate-800 border border-slate-700 text-slate-200 p-2 rounded-lg text-sm font-semibold shadow">
-              <i class="fa-solid fa-sliders"></i>
-            </button>
             <button onclick="openModal()" title="新增業務" class="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg text-sm font-semibold shadow flex items-center gap-1">
               <i class="fa-solid fa-plus"></i>
             </button>
@@ -111,25 +108,12 @@
              target="_blank" 
              rel="noopener noreferrer" 
              title="開啟水上分隊共用 Google 雲端硬碟（提供同仁上傳檔案）" 
-             class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2 rounded-lg font-bold flex items-center gap-1.5 shadow transition transform active:scale-95">
+             class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3.5 py-2 rounded-lg font-bold flex items-center gap-1.5 shadow transition transform active:scale-95">
             <i class="fa-brands fa-google-drive text-base text-white"></i>
             <span class="hidden sm:inline">同仁雲端上傳區</span>
             <span class="sm:hidden">上傳硬碟</span>
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-75"></i>
           </a>
-
-          <!-- Deploy Guide Button -->
-          <button onclick="openDeployGuideModal()" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg font-semibold flex items-center gap-1.5 transition">
-            <i class="fa-brands fa-github text-white"></i>
-            <span class="hidden sm:inline">GitHub Pages 部署</span>
-            <span class="sm:hidden">部署</span>
-          </button>
-
-          <!-- Data Management Button -->
-          <button onclick="openDataModal()" class="bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs px-3 py-2 rounded-lg font-semibold flex items-center gap-1.5 transition">
-            <i class="fa-solid fa-cloud-arrow-down text-cyan-400"></i>
-            <span>資料管理</span>
-          </button>
 
           <!-- Add Item Button (Desktop) -->
           <button onclick="openModal()" class="hidden md:flex items-center gap-1.5 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white font-bold px-3.5 py-2 rounded-lg shadow-md hover:shadow-red-600/30 transition transform active:scale-95 text-xs lg:text-sm">
@@ -152,7 +136,7 @@
       </div>
       <div class="overflow-hidden whitespace-nowrap w-full text-slate-700 font-medium">
         <marquee behavior="scroll" direction="left" scrollamount="4" id="noticeMarquee">
-          歡迎使用水上分隊業務面板雲端版！本面板支援免伺服器靜態部署於 GitHub Pages，空白表格皆串接 Google 雲端硬碟與 Google 表單，隨點隨填！
+          歡迎使用水上分隊業務面板！各組業務指引、空白表格與線上回報皆已串接 Google 雲端硬碟與 Google 表單，同仁可隨點隨查隨填報！
         </marquee>
       </div>
       <div class="shrink-0">
@@ -271,12 +255,6 @@
         </h2>
         <span id="filteredCountText" class="text-xs font-medium text-slate-500 bg-slate-200 px-2 py-0.5 rounded-full">共 0 項</span>
       </div>
-      
-      <div class="flex items-center gap-2">
-        <button onclick="openDeployGuideModal()" class="text-xs text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 px-2.5 py-1 rounded-md shadow-sm font-semibold flex items-center gap-1 transition">
-          <i class="fa-solid fa-cloud-arrow-up"></i> 如何發布到網路上？
-        </button>
-      </div>
     </div>
 
     <!-- Cards Container -->
@@ -291,13 +269,10 @@
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-2">
         <span class="font-bold text-slate-700">嘉義縣消防局 第二大隊水上分隊</span>
-        <span>• 雲端業務管理平台 (純靜態免主機維護架構)</span>
+        <span>• 雲端業務管理平台</span>
       </div>
       <div class="flex items-center gap-4">
         <span>救災救護 • 24小時守護水上鄉民安全</span>
-        <button onclick="openDeployGuideModal()" class="text-red-600 hover:underline">
-          <i class="fa-brands fa-github"></i> GitHub Pages 部署手冊
-        </button>
       </div>
     </div>
   </footer>
