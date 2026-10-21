@@ -219,5 +219,31 @@
     "google_form_url": "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleAdminSupplyRequest/viewform",
     "is_pinned": 0,
     "updated_at": "2026-10-13"
+  },
+  {
+    "id": 17,
+    "title": "水上分隊 幹部重點工作進度管制與交接查核表",
+    "category": "主管區",
+    "item_type": "doc",
+    "description": "包含大隊週報交辦追蹤事項、局令專案列管進度、主管交接班勤務督導要點。",
+    "handler": "分隊長 呂詠祺",
+    "file_url": "https://drive.google.com/drive/folders/1wRHAU_RGbo_IlvTzUOl5pzH90IC8VaKO?usp=drive_link",
+    "file_format": "LINK",
+    "google_form_url": "",
+    "is_pinned": 1,
+    "updated_at": "2026-10-21"
+  },
+  {
+    "id": 18,
+    "title": "分隊幹部常年勤務督導與備勤紀律查核紀錄 (空白表)",
+    "category": "主管區",
+    "item_type": "blank_form",
+    "description": "值班台勤務抽查、同仁在隊備勤紀律、救災車輛器材保養定期督導紀錄空白表格式。",
+    "handler": "小隊長 王建仁",
+    "file_url": "https://drive.google.com/drive/folders/1wRHAU_RGbo_IlvTzUOl5pzH90IC8VaKO?usp=drive_link",
+    "file_format": "LINK",
+    "google_form_url": "",
+    "is_pinned": 0,
+    "updated_at": "2026-10-21"
   }
 ]

@@ -34,6 +34,7 @@
     body {
       font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
+    .badge-supervisor { background-color: #fae8ff; color: #86198f; border-color: #f5d0fe; }
     .badge-ems { background-color: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
     .badge-rescue { background-color: #fee2e2; color: #b91c1c; border-color: #fecaca; }
     .badge-prevention { background-color: #d1fae5; color: #047857; border-color: #a7f3d0; }
@@ -164,7 +165,7 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
     
     <!-- Top Stats Counter Strip -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
       
       <div onclick="switchTab('全部')" class="cursor-pointer bg-white p-3 rounded-xl shadow-sm border border-slate-200 hover:border-slate-400 hover:shadow transition flex items-center gap-3">
         <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700">
@@ -173,6 +174,16 @@
         <div>
           <div class="text-xs text-slate-500 font-semibold">全部業務</div>
           <div id="statTotal" class="text-lg font-bold text-slate-800">0</div>
+        </div>
+      </div>
+
+      <div onclick="switchTab('主管區')" class="cursor-pointer bg-white p-3 rounded-xl shadow-sm border border-purple-100 hover:border-purple-400 hover:shadow transition flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">
+          <i class="fa-solid fa-user-tie text-lg"></i>
+        </div>
+        <div>
+          <div class="text-xs text-purple-700 font-semibold">主管區</div>
+          <div id="statSupervisor" class="text-lg font-bold text-purple-800">0</div>
         </div>
       </div>
 
@@ -228,7 +239,7 @@
 
     </div>
 
-    <!-- Navigation Tabs for the 5 Sections -->
+    <!-- Navigation Tabs for the Sections -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-6">
       
       <!-- Primary Tabs -->
@@ -238,6 +249,12 @@
           <i class="fa-solid fa-layer-group"></i>
           <span>全部業務項目</span>
           <span id="badge-tab-全部" class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-slate-200 text-slate-700">0</span>
+        </button>
+
+        <button onclick="switchTab('主管區')" id="tab-主管區" class="tab-btn px-5 py-3.5 text-sm flex items-center gap-2 whitespace-nowrap transition border-b-2 border-transparent text-slate-600 hover:text-purple-700">
+          <i class="fa-solid fa-user-tie text-purple-600"></i>
+          <span>👔 主管區</span>
+          <span id="badge-tab-主管區" class="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800">0</span>
         </button>
 
         <button onclick="switchTab('救護組')" id="tab-救護組" class="tab-btn px-5 py-3.5 text-sm flex items-center gap-2 whitespace-nowrap transition border-b-2 border-transparent text-slate-600 hover:text-sky-700">
@@ -406,6 +423,7 @@
               所屬組別 <span class="text-red-500">*</span>
             </label>
             <select id="formCategory" required class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white font-medium">
+              <option value="主管區">👔 主管區</option>
               <option value="救護組">🚑 救護組</option>
               <option value="搶救組">🚒 搶救組</option>
               <option value="預防組">🛡️ 預防組</option>
@@ -942,6 +960,32 @@
         google_form_url: "https://docs.google.com/forms/d/e/1FAIpQLSc-sampleAdminSupplyRequest/viewform",
         is_pinned: 0,
         updated_at: "2026-10-13"
+      },
+      {
+        id: 17,
+        title: "水上分隊 幹部重點工作進度管制與交接查核表",
+        category: "主管區",
+        item_type: "doc",
+        description: "包含大隊週報交辦追蹤事項、局令專案列管進度、主管交接班勤務督導要點。",
+        handler: "分隊長 呂詠祺",
+        file_url: "https://drive.google.com/drive/folders/1wRHAU_RGbo_IlvTzUOl5pzH90IC8VaKO?usp=drive_link",
+        file_format: "LINK",
+        google_form_url: "",
+        is_pinned: 1,
+        updated_at: "2026-10-21"
+      },
+      {
+        id: 18,
+        title: "分隊幹部常年勤務督導與備勤紀律查核紀錄 (空白表)",
+        category: "主管區",
+        item_type: "blank_form",
+        description: "值班台勤務抽查、同仁在隊備勤紀律、救災車輛器材保養定期督導紀錄空白表格式。",
+        handler: "小隊長 王建仁",
+        file_url: "https://drive.google.com/drive/folders/1wRHAU_RGbo_IlvTzUOl5pzH90IC8VaKO?usp=drive_link",
+        file_format: "LINK",
+        google_form_url: "",
+        is_pinned: 0,
+        updated_at: "2026-10-21"
       }
     ];
 
@@ -1070,6 +1114,7 @@
     // Update Counter Badges
     function updateStats() {
       const catCounts = {
+        "主管區": 0,
         "救護組": 0,
         "搶救組": 0,
         "預防組": 0,
@@ -1084,18 +1129,20 @@
       });
 
       document.getElementById("statTotal").innerText = items.length;
-      document.getElementById("statEms").innerText = catCounts["救護組"];
-      document.getElementById("statRescue").innerText = catCounts["搶救組"];
-      document.getElementById("statPrevention").innerText = catCounts["預防組"];
-      document.getElementById("statAdmin").innerText = catCounts["行政組"];
-      document.getElementById("statNotice").innerText = catCounts["公告區"];
+      document.getElementById("statSupervisor").innerText = catCounts["主管區"] || 0;
+      document.getElementById("statEms").innerText = catCounts["救護組"] || 0;
+      document.getElementById("statRescue").innerText = catCounts["搶救組"] || 0;
+      document.getElementById("statPrevention").innerText = catCounts["預防組"] || 0;
+      document.getElementById("statAdmin").innerText = catCounts["行政組"] || 0;
+      document.getElementById("statNotice").innerText = catCounts["公告區"] || 0;
 
       document.getElementById("badge-tab-全部").innerText = items.length;
-      document.getElementById("badge-tab-救護組").innerText = catCounts["救護組"];
-      document.getElementById("badge-tab-搶救組").innerText = catCounts["搶救組"];
-      document.getElementById("badge-tab-預防組").innerText = catCounts["預防組"];
-      document.getElementById("badge-tab-行政組").innerText = catCounts["行政組"];
-      document.getElementById("badge-tab-公告區").innerText = catCounts["公告區"];
+      document.getElementById("badge-tab-主管區").innerText = catCounts["主管區"] || 0;
+      document.getElementById("badge-tab-救護組").innerText = catCounts["救護組"] || 0;
+      document.getElementById("badge-tab-搶救組").innerText = catCounts["搶救組"] || 0;
+      document.getElementById("badge-tab-預防組").innerText = catCounts["預防組"] || 0;
+      document.getElementById("badge-tab-行政組").innerText = catCounts["行政組"] || 0;
+      document.getElementById("badge-tab-公告區").innerText = catCounts["公告區"] || 0;
     }
 
     function updateViewTitle() {
@@ -1149,6 +1196,7 @@
 
     function getCategoryStyle(cat) {
       switch (cat) {
+        case "主管區": return { border: "border-purple-300", badge: "badge-supervisor", icon: "fa-solid fa-user-tie text-purple-600" };
         case "救護組": return { border: "border-sky-200", badge: "badge-ems", icon: "fa-solid fa-truck-medical text-sky-600" };
         case "搶救組": return { border: "border-red-200", badge: "badge-rescue", icon: "fa-solid fa-fire-extinguisher text-red-600" };
         case "預防組": return { border: "border-emerald-200", badge: "badge-prevention", icon: "fa-solid fa-shield-halved text-emerald-600" };
